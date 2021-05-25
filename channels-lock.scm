@@ -1,20 +1,15 @@
 (list (channel
+        (name 'non-guix)
+        (url "https://gitlab.com/nonguix/nonguix")
+        (commit
+          "9b8e36975bd0dd81d47d8b06da4beffe8bac3a50"))
+      (channel
         (name 'guix)
         (url "https://git.savannah.gnu.org/git/guix.git")
         (commit
-          "5686f5d7cdde6ba3149ef960149ff2ff323d49e2")
+          "946dd6103a843b48e828addae53c240077c2221a")
         (introduction
           (make-channel-introduction
             "9edb3f66fd807b096b48283debdcddccfea34bad"
             (openpgp-fingerprint
-              "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))
-      (channel
-        (name 'rde)
-        (url "https://github.com/abcdw/rde")
-        (commit
-          "1e854c0423d361316698915833d8b23fbc6453c2"))
-      (channel
-        (name 'non-guix)
-        (url "https://gitlab.com/nonguix/nonguix")
-        (commit
-          "712cdf306b09b3a5b27c0f8f42860ede196134fd")))
+              "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))

@@ -1,37 +1,34 @@
-;; This is an operating system configuration template
-;; for a "desktop" setup with GNOME and Xfce where the
-;; root partition is encrypted with LUKS.
+(use-modules (rde examples abcdw configs)
+	     (rde features)
+	     (rde features base)
+	     (rde features system)
 
-(use-modules (gnu) (guix) (srfi srfi-1))
-(use-modules (gnu) (gnu system nss))
-(use-modules (nongnu packages linux)
+	     (srfi srfi-1)
+	     (guix gexp)
+	     (gnu packages linux)
+
+	     (nongnu packages linux)
 	     (nongnu system linux-initrd))
-(use-modules ((rde system desktop) #:prefix rde-desktop:))
-(use-service-modules desktop xorg networking)
-(use-package-modules certs gnome terminals emacs fonts emacs-xyz guile
-		     xorg tmux wm suckless admin)
 
-(operating-system
- (inherit rde-desktop:os)
- (host-name "ixy")
- (timezone "Europe/Moscow")
- (locale "en_US.utf8")
+(define ixy-cleaned-features
+  (remove (lambda (f)
+	    (member (feature-name f) (list 'base-services 'kernel)))
+	  (rde-config-features ixy-config)))
 
- (keyboard-layout
-  (keyboard-layout "us,ru" "dvorak,"
-		   #:options '("grp:win_space_toggle" "ctrl:nocaps")))
+(define ixy-unfree-config
+  (rde-config
+   (inherit ixy-config)
+   (features
+    (append
+     (list
+      (feature-kernel
+       #:kernel linux
+       #:kernel-loadable-modules (list v4l2loopback-linux-module)
+       #:kernel-arguments '("snd_hda_intel.dmic_detect=0")
+       #:firmware (list linux-firmware))
+      (feature-base-services
+       #:guix-substitute-urls (list "https://mirror.brielmaier.net")
+       #:guix-authorized-keys (list (local-file "./mirror.brielmaier.net.pub"))))
+     ixy-cleaned-features))))
 
- (kernel linux)
- (firmware (cons*
-	    ;; iwlwifi-firmware
-	    linux-firmware
-            %base-firmware))
-
- ;; (users (cons (user-account
- ;;               (name "abcdw")
- ;;               (password "")                     ;no password
- ;;               (group "users")
- ;;               (supplementary-groups '("wheel" "netdev"
- ;;                                       "audio" "video")))
- ;; 	      %base-user-accounts))
- )
+(rde-config-operating-system ixy-unfree-config)
