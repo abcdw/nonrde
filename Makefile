@@ -1,10 +1,10 @@
-iso:
-	guix time-machine -C ./channels-lock.scm -- \
-	system disk-image ./ixy.scm
-
 reconfigure:
 	sudo guix time-machine -C ./channels-lock.scm -- \
 	system -L ../rde reconfigure ./ixy.scm
+
+iso:
+	guix time-machine -C ./channels-lock.scm -- \
+	system disk-image ./ixy.scm
 
 build:
 	guix time-machine -C ./channels-lock.scm -- \
