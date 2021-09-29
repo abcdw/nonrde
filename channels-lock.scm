@@ -2,12 +2,12 @@
         (name 'non-guix)
         (url "https://gitlab.com/nonguix/nonguix")
         (commit
-          "9b8e36975bd0dd81d47d8b06da4beffe8bac3a50"))
+          "c93654cc7f99e15d5c1252d98e0bbf14e79e7de9"))
       (channel
         (name 'guix)
         (url "https://git.savannah.gnu.org/git/guix.git")
         (commit
-          "946dd6103a843b48e828addae53c240077c2221a")
+          "4687ee9cacae7dcc63d44365062de30e20da8b0e")
         (introduction
           (make-channel-introduction
             "9edb3f66fd807b096b48283debdcddccfea34bad"
