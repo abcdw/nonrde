@@ -27,8 +27,9 @@
        #:kernel-arguments '("snd_hda_intel.dmic_detect=0")
        #:firmware (list linux-firmware))
       (feature-base-services
-       #:guix-substitute-urls (list "https://mirror.brielmaier.net")
-       #:guix-authorized-keys (list (local-file "./mirror.brielmaier.net.pub"))))
+       ;; TODO: Use substitute-urls directly for guix commands?
+       #:guix-substitute-urls (list "https://substitutes.nonguix.org")
+       #:guix-authorized-keys (list (local-file "./nonguix-key.pub"))))
      ixy-cleaned-features))))
 
 (rde-config-operating-system ixy-unfree-config)
