@@ -1,13 +1,17 @@
+(use-modules (guix channels))
+
 (list (channel
         (name 'non-guix)
         (url "https://gitlab.com/nonguix/nonguix")
+        (branch "master")
         (commit
-          "c80b1b3f1fbae686ca568a98817ed2f548f9dec0"))
+          "4c0b9a86521a6d06c895b41e62c254da83feff7a"))
       (channel
         (name 'guix)
-        (url "https://git.savannah.gnu.org/git/guix.git")
+        (url "file:///home/bob/work/gnu/guix")
+        (branch "master")
         (commit
-          "c0c878856edba12d148aa3ec3dfbe7381db1f9f9")
+          "ad876e5b13")
         (introduction
           (make-channel-introduction
             "9edb3f66fd807b096b48283debdcddccfea34bad"
