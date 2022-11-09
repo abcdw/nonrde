@@ -5,13 +5,13 @@
         (url "https://gitlab.com/nonguix/nonguix")
         (branch "master")
         (commit
-          "4c0b9a86521a6d06c895b41e62c254da83feff7a"))
+          "4399c012e4bb5460c1807285ed98fb5455816f8c"))
       (channel
         (name 'guix)
-        (url "file:///home/bob/work/gnu/guix")
+        (url "https://git.savannah.gnu.org/git/guix.git")
         (branch "master")
         (commit
-          "ad876e5b13")
+          "c2cb1160322c5b18b839b3c2ab0d53fb78793125")
         (introduction
           (make-channel-introduction
             "9edb3f66fd807b096b48283debdcddccfea34bad"
