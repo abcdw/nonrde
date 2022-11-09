@@ -23,11 +23,13 @@
      (list
       (feature-kernel
        #:kernel linux
-       #:kernel-loadable-modules (list v4l2loopback-linux-module)
+       ;; #:kernel-loadable-modules (list v4l2loopback-linux-module)
        #:kernel-arguments '("snd_hda_intel.dmic_detect=0")
        #:firmware (list linux-firmware))
       (feature-base-services
        ;; TODO: Use substitute-urls directly for guix commands?
+       #:default-substitute-urls (list "https://bordeaux.guix.gnu.org"
+                                       "http://ci.guix.trop.in")
        #:guix-substitute-urls (list "https://substitutes.nonguix.org")
        #:guix-authorized-keys (list (local-file "./nonguix-key.pub"))))
      ixy-cleaned-features))))
