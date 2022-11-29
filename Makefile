@@ -1,17 +1,26 @@
+GUIX=./pre-inst-env guix
+
 build:
-	guix time-machine -C ./channels-lock.scm -- \
-	system -L ../rde build ./ixy.scm
+	${GUIX} time-machine -C ./channels-lock.scm -- \
+	system build ./ixy.scm
+
+init:
+	${GUIX} system init ./ixy.scm /mnt
 
 reconfigure:
-	sudo guix time-machine -C ./channels-lock.scm -- \
-	system -L ../rde reconfigure ./ixy.scm
+	sudo -E ${GUIX} time-machine -C ./channels-lock.scm -- \
+	system reconfigure --allow-downgrades ./ixy.scm
+
 
 install: reconfigure
 
 iso:
-	guix time-machine -C ./channels-lock.scm -- \
+	${GUIX} time-machine -C ./channels-lock.scm -- \
 	system disk-image ./ixy.scm
 
 channels-update-lock:
-	guix time-machine -C ./channels.scm -- \
-	describe -f channels > channels-lock.scm
+	echo -e "(use-modules (guix channels))\n" > channels-lock-tmp.scm
+	${GUIX} time-machine -C ./channels.scm -- \
+	describe -f channels >> channels-lock-tmp.scm
+	cat channels-lock-tmp.scm > channels-lock.scm
+	rm channels-lock-tmp.scm
