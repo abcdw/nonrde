@@ -1,19 +1,19 @@
 (use-modules (rde examples abcdw configs)
-	     (rde features)
-	     (rde features base)
-	     (rde features system)
+             (rde features)
+             (rde features base)
+             (rde features system)
 
-	     (srfi srfi-1)
-	     (guix gexp)
-	     (gnu packages linux)
+             (srfi srfi-1)
+             (guix gexp)
+             (gnu packages linux)
 
-	     (nongnu packages linux)
-	     (nongnu system linux-initrd))
+             (nongnu packages linux)
+             (nongnu system linux-initrd))
 
 (define ixy-cleaned-features
   (remove (lambda (f)
-	    (member (feature-name f) (list 'base-services 'kernel)))
-	  (rde-config-features ixy-config)))
+            (member (feature-name f) (list 'base-services 'kernel)))
+          (rde-config-features ixy-config)))
 
 (define ixy-unfree-config
   (rde-config
