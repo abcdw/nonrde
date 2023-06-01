@@ -1,22 +1,11 @@
 (use-modules (guix channels))
 
 (list (channel
-        (name 'rde)
-        (url "https://git.sr.ht/~abcdw/rde")
-        (branch "master")
-        (commit
-          "bb580995a3ace2ecf4e3ef33d200d5b8faad751e")
-        (introduction
-          (make-channel-introduction
-            "257cebd587b66e4d865b3537a9a88cccd7107c95"
-            (openpgp-fingerprint
-              "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))
-      (channel
         (name 'non-guix)
         (url "https://gitlab.com/nonguix/nonguix")
         (branch "master")
         (commit
-          "ee2826e22be82ebd624b4daeadc6de97eaa69d02")
+          "94d9e589b4e8eea27b205bb744df0a3d79da0871")
         (introduction
           (make-channel-introduction
             "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
@@ -27,9 +16,20 @@
         (url "https://git.savannah.gnu.org/git/guix.git")
         (branch "master")
         (commit
-          "8e883dc8210d4a7c3f09961994685ed54942fd73")
+          "c68648a8a503c59b17ec38107e7c787f3b7370f3")
         (introduction
           (make-channel-introduction
             "9edb3f66fd807b096b48283debdcddccfea34bad"
             (openpgp-fingerprint
-              "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
+              "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))
+      (channel
+        (name 'rde)
+        (url "https://git.sr.ht/~abcdw/rde")
+        (branch "master")
+        (commit
+          "a3557648b28c70713f1986da357f6b1ccdd34878")
+        (introduction
+          (make-channel-introduction
+            "257cebd587b66e4d865b3537a9a88cccd7107c95"
+            (openpgp-fingerprint
+              "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0")))))
