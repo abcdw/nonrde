@@ -1,4 +1,4 @@
-(use-modules (abcdw configs)
+(use-modules (rde-configs configs)
              (rde features)
              (rde features base)
              (rde features system)
@@ -26,11 +26,16 @@
       (feature-kernel
        #:kernel linux
        #:kernel-arguments '("snd_hda_intel.dmic_detect=0")
-       #:firmware (list linux-firmware))
+       #:firmware (list
+                   iwlwifi-firmware
+                   i915-firmware
+                   ibt-hw-firmware
+                   ;; linux-firmware
+                   ))
       (feature-base-services
        ;; TODO: Use substitute-urls directly for guix commands?
        #:default-substitute-urls (list "https://bordeaux.guix.gnu.org"
-                                       "https://ci.guix.trop.in")
+                                       "https://ci.guix.gnu.org")
        #:guix-substitute-urls (list "https://substitutes.nonguix.org")
        #:guix-authorized-keys (list nonguix-pub)))
      cleaned-features))))

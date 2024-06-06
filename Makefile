@@ -8,9 +8,20 @@ PULL_EXTRA_OPTIONS=
 # --allow-downgrades
 ROOT_MOUNT_POINT=/mnt
 
+include ../rde/examples/profiles.mk
+
+authorize-nonguix:
+	sudo guix archive --authorize < signing-key.pub
+
+ixy/system/build: guix
+	RDE_TARGET=ixy-system ${GUIX} \
+	system \
+        --substitute-urls="https://substitutes.nonguix.org https://ci.guix.gnu.org https://bordeaux.guix.gnu.org" \
+	build ${CONFIGS}
+
 ixy/system/reconfigure: guix
-	RDE_TARGET=ixy-system ${GUIX} system \
-	reconfigure ${CONFIGS}
+	RDE_TARGET=ixy-system sudo ${GUIX} system \
+	reconfigure ${CONFIGS} # --allow-downgrades
 
 cow-store:
 	sudo herd start cow-store ${ROOT_MOUNT_POINT}
@@ -30,43 +41,9 @@ target/nonrde-live.iso: guix target
 target/release:
 	mkdir -p target/release
 
-release/nonrde-live-x86_64: target/nonrde-live.iso target/release
-	cp -df $< target/release/nonrde-live-${VERSION}-x86_64.iso
+release/nonrde-live-x86_64: target/release # target/nonrde-live.iso
+	cp -df target/nonrde-live.iso target/release/nonrde-live-${VERSION}-x86_64.iso
 	gpg -ab target/release/nonrde-live-${VERSION}-x86_64.iso
-
-
-#
-# Profiles
-#
-
-guix: target/profiles/guix.lock
-
-target/profiles:
-	mkdir -p target/profiles
-
-target/profiles/guix.lock: rde/channels-lock.scm
-	make target/profiles/guix
-
-target/profiles/guix: target/profiles rde/channels-lock.scm
-	guix pull -C rde/channels-lock.scm -p ${GUIX_PROFILE} \
-	${PULL_EXTRA_OPTIONS}
-
-target/profiles/guix-local: target/profiles rde/channels-lock-local.scm
-	guix pull -C rde/channels-lock-local.scm -p ${GUIX_PROFILE} \
-	${PULL_EXTRA_OPTIONS}
-
-rde/channels-lock.scm: rde/channels.scm
-	echo -e "(use-modules (guix channels))\n" > ./rde/channels-lock-tmp.scm
-	guix time-machine -C ./rde/channels.scm -- \
-	describe -f channels >> ./rde/channels-lock-tmp.scm
-	mv ./rde/channels-lock-tmp.scm ./rde/channels-lock.scm
-
-rde/channels-lock-local.scm: rde/channels-local.scm
-	echo -e "(use-modules (guix channels))\n" > ./rde/channels-lock-tmp.scm
-	guix time-machine -C ./rde/channels-local.scm -- \
-	describe -f channels >> ./rde/channels-lock-tmp.scm
-	mv ./rde/channels-lock-tmp.scm ./rde/channels-lock-local.scm
-
 
 clean-target:
 	rm -rf ./target
