@@ -1,6 +1,14 @@
-VERSION=latest
-GUIX_PROFILE=target/profiles/guix
-GUIX=./pre-inst-env ${GUIX_PROFILE}/bin/guix
+VERSION=0.5.0
+CHANNELS_FILE=./env/guix/nonrde/env/guix/channels.scm
+
+GUIX_ENV_LOAD_PATH=-L ./env/guix -L ../rde/examples/env/guix
+DEV_ENV_LOAD_PATH=-L ./env/guix -L ./env/dev \
+-L ../rde/examples/env/guix -L ../rde/examples/env/dev
+GUIXTM=guix time-machine ${GUIX_ENV_LOAD_PATH} -C ${CHANNELS_FILE}
+GUIX=$(GUIXTM) --
+
+ALL_SRC_LOAD_PATH=${GUIX_ENV_LOAD_PATH} \
+-L ./src -L ../rde/examples/src -L ../rde/src
 
 SRC_DIR=./src
 CONFIGS=${SRC_DIR}/configs.scm
@@ -8,20 +16,32 @@ PULL_EXTRA_OPTIONS=
 # --allow-downgrades
 ROOT_MOUNT_POINT=/mnt
 
-include ../rde/examples/profiles.mk
+ares:
+	${GUIX} shell ${DEV_ENV_LOAD_PATH} guile-next guile-ares-rs \
+	-e '(@ (nonrde env dev packages) guix-package)' \
+	-e '(@ (nonrde env dev packages) channels-package)' \
+	-- guile \
+	${ALL_SRC_LOAD_PATH} \
+	-L /data/abcdw/work/abcdw/guile-ares-rs/src/guile \
+	-c \
+"(begin (use-modules (guix gexp)) #;(load gexp reader macro globally) \
+((@ (ares server) run-nrepl-server)))"
 
 authorize-nonguix:
 	sudo guix archive --authorize < signing-key.pub
 
-ixy/system/build: guix
+describe:
+	${GUIX} describe
+
+ixy/system/build:
 	RDE_TARGET=ixy-system ${GUIX} \
-	system \
+	system ${ALL_SRC_LOAD_PATH} \
         --substitute-urls="https://substitutes.nonguix.org https://ci.guix.gnu.org https://bordeaux.guix.gnu.org" \
 	build ${CONFIGS}
 
-ixy/system/reconfigure: guix
-	RDE_TARGET=ixy-system sudo ${GUIX} system \
-	reconfigure ${CONFIGS} # --allow-downgrades
+ixy/system/reconfigure:
+	RDE_TARGET=ixy-system sudo -E ${GUIX} system \
+	reconfigure ${ALL_SRC_LOAD_PATH} ${CONFIGS} # --allow-downgrades
 
 cow-store:
 	sudo herd start cow-store ${ROOT_MOUNT_POINT}
