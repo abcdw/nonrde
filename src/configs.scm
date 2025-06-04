@@ -7,16 +7,30 @@
              (ice-9 match)
              (guix gexp)
              (gnu packages linux)
-
+             (gnu services base)
              (nongnu packages linux)
              (nongnu system linux-initrd))
 
 (define nonguix-pub (local-file "../files/keys/nonguix-key.pub"))
 
+(define (feature-nonguix-substitutes)
+  (define (get-system-services _)
+    (list
+     (simple-service
+      'nonguix-substitutes
+      guix-service-type
+      (guix-extension
+       (substitute-urls (list "https://substitutes.nonguix.org"))
+       (authorized-keys (list nonguix-pub))))))
+
+  (feature
+   (name 'nonguix-substitutes)
+   (system-services-getter get-system-services)))
+
 (define (unfree-kernel config)
   (define cleaned-features
     (remove (lambda (f)
-              (member (feature-name f) (list 'base-services 'kernel)))
+              (member (feature-name f) (list 'kernel)))
             (rde-config-features config)))
   (rde-config
    (inherit config)
@@ -32,12 +46,7 @@
                    ibt-hw-firmware
                    ;; linux-firmware
                    ))
-      (feature-base-services
-       ;; TODO: Use substitute-urls directly for guix commands?
-       #:default-substitute-urls (list "https://bordeaux.guix.gnu.org"
-                                       "https://ci.guix.gnu.org")
-       #:guix-substitute-urls (list "https://substitutes.nonguix.org")
-       #:guix-authorized-keys (list nonguix-pub)))
+      (feature-nonguix-substitutes))
      cleaned-features))))
 
 (define ixy-unfree-config
