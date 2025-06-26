@@ -6,6 +6,7 @@
              (srfi srfi-1)
              (ice-9 match)
              (guix gexp)
+             (gnu services)
              (gnu packages linux)
              (gnu services base)
              (nongnu packages linux)
