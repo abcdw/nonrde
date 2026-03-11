@@ -76,10 +76,10 @@
        #:kernel linux
        #:kernel-arguments '("snd_hda_intel.dmic_detect=0")
        #:firmware (list
-                   iwlwifi-firmware
-                   i915-firmware
-                   ibt-hw-firmware
-                   ;; linux-firmware
+                   ;; iwlwifi-firmware
+                   ;; i915-firmware
+                   ;; ibt-hw-firmware
+                   linux-firmware
                    ))
       (feature-nonguix-substitutes))
      cleaned-features))))
