@@ -90,6 +90,9 @@
 (define ixy-os
   (rde-config-operating-system ixy-unfree-config))
 
+(define ixy-home
+  (rde-config-home-environment ixy-unfree-config))
+
 (define live-unfree-config
   (unfree-kernel live-config))
 
@@ -101,6 +104,7 @@
     (match rde-target
       ("live-system" live-os)
       ("ixy-system" ixy-os)
+      ("ixy-home" ixy-home)
       (_ ixy-os))))
 
 (dispatcher)
