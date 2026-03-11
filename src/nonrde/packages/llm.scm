@@ -266,4 +266,57 @@ exec ~a.real \"$@\"~%"
     (description "OpenCode is an open source agent that helps you write code in your terminal.")
     (license license:expat)))
 
+(define-public pi-coding-agent
+  (package
+    (name "pi-coding-agent")
+    (version "0.56.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (string-append
+             "https://github.com/badlogic/pi-mono/releases/download/v"
+             version "/pi-linux-x64.tar.gz"))
+       (sha256
+        (base32 "1xgk3ddbz7plvc5z2siknfqrjq011gh5j9y23a2xrj96pq018rri"))))
+    (build-system binary-build-system)
+    (arguments
+     (list
+      #:strip-binaries? #f
+      #:validate-runpath? #f
+      #:patchelf-plan #~'()
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'install 'patch-and-wrap
+            (lambda* (#:key inputs outputs #:allow-other-keys)
+              (let* ((out (assoc-ref outputs "out"))
+                     (bin (string-append out "/bin"))
+                     (orig (string-append out "/pi"))
+                     (bash (search-input-file inputs "bin/bash"))
+                     (patchelf (search-input-file inputs "bin/patchelf"))
+                     (ld.so (search-input-file
+                             inputs "lib/ld-linux-x86-64.so.2"))
+                     (libpath (string-append
+                               (assoc-ref inputs "glibc") "/lib")))
+                (invoke patchelf "--set-interpreter" ld.so orig)
+                (rename-file orig (string-append orig ".real"))
+                (mkdir-p bin)
+                (call-with-output-file (string-append bin "/pi")
+                  (lambda (port)
+                    (format port "#!~a
+export LD_LIBRARY_PATH=~a${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH
+exec ~a.real \"$@\"~%"
+                            bash libpath orig)))
+                (chmod (string-append bin "/pi") #o755)))))))
+    (native-inputs
+     (list patchelf))
+    (inputs
+     (list bash-minimal glibc))
+    (supported-systems '("x86_64-linux"))
+    (home-page "https://github.com/badlogic/pi-mono")
+    (synopsis "AI coding agent for the terminal")
+    (description
+     "Pi is an interactive coding agent CLI with read, bash, edit, and write
+tools and session management.  It supports multiple LLM providers and can
+be extended with skills, prompt templates, and extensions.")
+    (license license:expat)))
 ;; ((@ (rde api store) build) opencode-bin)
