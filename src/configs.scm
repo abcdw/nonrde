@@ -7,8 +7,10 @@
              (ice-9 match)
              (guix gexp)
              (gnu services)
+             (gnu home services)
              (gnu packages linux)
              (gnu services base)
+             (gnu services networking)
              (nongnu packages linux)
              (nongnu system linux-initrd))
 
@@ -38,6 +40,38 @@
    (features
     (append
      (list
+      (feature-custom-services
+       #:feature-name-prefix 'packages
+       #:home-services
+       (list
+        (simple-service
+         'some-packages
+         home-profile-service-type
+         (list
+          (@ (nonrde packages llm) claude-code)
+          (@ (nonrde packages llm) pi-coding-agent)
+          (@ (nonrde packages llm) emacs-claude-code-ide)
+          (@ (gnu packages web) jq)
+          (@ (nonrde packages editors) lapce)
+          (@ (nonrde packages search) searxng)
+          (@ (nonrde packages llm) ollama)
+          (@ (nonrde packages llm) opencode-bin)
+          (@ (nonrde packages llm) emacs-opencode)
+          (@ (nongnu packages video) intel-media-driver/nonfree)
+          (@ (nonrde packages android) scrcpy)
+          (@ (nongnu packages productivity) zotero)
+          ;; (@ (nongnu packages game-client) steam)
+          )))
+       #:system-services
+       (list
+        ;; (service nftables-service-type)
+        (service iptables-service-type)
+        (simple-service
+         'some-packages
+         profile-service-type
+         (list
+          ;; (@ (nongnu packages chrome) google-chrome-unstable)
+          ))))
       (feature-kernel
        #:kernel linux
        #:kernel-arguments '("snd_hda_intel.dmic_detect=0")
