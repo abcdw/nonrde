@@ -15,6 +15,7 @@
              (nongnu system linux-initrd))
 
 (define nonguix-pub (local-file "../files/keys/nonguix-key.pub"))
+(define guix-moe-pub (local-file "../files/keys/guix-moe-key.pub"))
 
 (define (feature-nonguix-substitutes)
   (define (get-system-services _)
@@ -23,8 +24,9 @@
       'nonguix-substitutes
       guix-service-type
       (guix-extension
-       (substitute-urls (list "https://substitutes.nonguix.org"))
-       (authorized-keys (list nonguix-pub))))))
+       (substitute-urls (list "https://ci.guix.moe"
+                              "https://substitutes.nonguix.org"))
+       (authorized-keys (list nonguix-pub guix-moe-pub))))))
 
   (feature
    (name 'nonguix-substitutes)
