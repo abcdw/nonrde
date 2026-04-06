@@ -82,6 +82,7 @@
                    ;; i915-firmware
                    ;; ibt-hw-firmware
                    linux-firmware
+                   sof-firmware
                    ))
       (feature-nonguix-substitutes))
      cleaned-features))))
