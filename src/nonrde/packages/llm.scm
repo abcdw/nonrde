@@ -228,7 +228,7 @@ exec ~a.real \"$@\"~%"
 (define-public pi-coding-agent
   (package
     (name "pi-coding-agent")
-    (version "0.65.1")
+    (version "0.67.1")
     (source
      (origin
        (method url-fetch)
@@ -236,7 +236,7 @@ exec ~a.real \"$@\"~%"
              "https://github.com/badlogic/pi-mono/releases/download/v"
              version "/pi-linux-x64.tar.gz"))
        (sha256
-        (base32 "0j83r0j7kxqfaxcmc6q3s7w9300id8klxdj5sj9mskic8mysxam9"))))
+        (base32 "1j7fjswirp2lq7m1jpg4x065f1y5mbm1gnnv601h1z7j4bc1zmr1"))))
     (build-system binary-build-system)
     (arguments
      (list
