@@ -165,47 +165,6 @@ creating new git branches and worktrees, session management, and a
 notification system for async operations.")
       (license license:gpl3+))))
 
-(define-public ollama
-  (package
-    (name "ollama")
-    (version "0.15.2")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (string-append
-             "https://github.com/ollama/ollama/releases/download/v"
-             version "/ollama-linux-amd64.tar.zst"))
-       (sha256
-        (base32 "0avf2m7b58ps2xy3jc41l7njq2xnxfmfb69cwicc35rvrbiswps4"))))
-    (build-system binary-build-system)
-    (arguments
-     (list
-      #:strip-binaries? #f
-      #:validate-runpath? #f
-      #:patchelf-plan
-      #~'(("bin/ollama" ("glibc" "gcc")))
-      #:install-plan
-      #~'(("bin/ollama" "bin/"))
-      #:phases
-      #~(modify-phases %standard-phases
-          (replace 'unpack
-            (lambda* (#:key inputs #:allow-other-keys)
-              (invoke "tar" "--use-compress-program=zstd" "-xf"
-                      (assoc-ref inputs "source")))))))
-    (native-inputs
-     (list zstd))
-    (inputs
-     (list glibc
-           `(,gcc "lib")))
-    (supported-systems '("x86_64-linux"))
-    (home-page "https://ollama.com")
-    (synopsis "Run large language models locally")
-    (description
-     "Ollama allows you to run large language models locally.
-It provides a simple API for creating, running and managing models,
-as well as a library of pre-built models that can be easily used.")
-    (license license:expat)))
-
 (define-public opencode-bin
   (package
     (name "opencode-bin")
