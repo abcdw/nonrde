@@ -282,7 +282,7 @@ be extended with skills, prompt templates, and extensions.")
 (define-public ollama
   (package
     (name "ollama")
-    (version "0.17.7")
+    (version "0.20.2")
     (source
      (origin
        (method url-fetch)
@@ -290,7 +290,7 @@ be extended with skills, prompt templates, and extensions.")
              "https://github.com/ollama/ollama/releases/download/v"
              version "/ollama-linux-amd64.tar.zst"))
        (sha256
-        (base32 "078ar2v457wbvv6ns7i70vy6ycxrv7lfnzfprs9j9yk6kw71xjji"))))
+        (base32 "0lb28aqgy83z1s2wq6l9xgz6iyal88yq51x9w66fbpi9l6n7m2d9"))))
     (build-system binary-build-system)
     (arguments
      (list
