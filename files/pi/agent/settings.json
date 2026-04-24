@@ -1,0 +1,21 @@
+{
+  "defaultModel": "gpt-5.4",
+  "defaultProvider": "openai-codex",
+  "defaultThinkingLevel": "xhigh",
+  "doubleEscapeAction": "tree",
+  "enabledModels": [
+    "gpt-5.4",
+    "deepseek-v3.2:cloud",
+    "glm-5.1:cloud",
+    "claude-opus-4-6",
+    "claude-sonnet-4-6",
+    "gemma4:31b-cloud",
+    "kimi-k2.5:cloud",
+    "minimax-m2.7:cloud"
+  ],
+  "hideThinkingBlock": false,
+  "lastChangelogVersion": "0.67.1",
+  "sessionDir": "/home/bob/.local/var/lib/pi/sessions",
+  "showHardwareCursor": true,
+  "theme": "light"
+}
