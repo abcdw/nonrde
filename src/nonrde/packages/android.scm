@@ -33,12 +33,12 @@
      (list
       #:install-plan #~'(("scrcpy-server" ""))))
     (supported-systems '("x86_64-linux"))
-    (synopsis "A modern runtime for JavaScript and TypeScript.")
+    (synopsis "Server component for scrcpy")
     (description
-     "Deno is a JavaScript, TypeScript, and WebAssembly runtime with secure
-defaults and a great developer experience. It's built on V8, Rust, and
-Tokio.")
-    (home-page "https://deno.com")
+     "This package provides the Android server component used by scrcpy to
+capture the device screen and inject input events.  It is installed on the
+Android device by the scrcpy client at runtime.")
+    (home-page "https://github.com/Genymobile/scrcpy")
     (license license:gpl3+)))
 
 (define-public scrcpy
