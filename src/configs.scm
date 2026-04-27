@@ -55,6 +55,7 @@
           (@ (nonrde packages llm) pi-coding-agent)
           (@ (nonrde packages llm) emacs-claude-code-ide)
           (@ (gnu packages web) jq)
+          (@ (nonrde packages terminals) ghostty)
           (@ (nonrde packages editors) lapce)
           (@ (nonrde packages search) searxng)
           (@ (nonrde packages llm) ollama)
