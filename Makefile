@@ -1,4 +1,4 @@
-VERSION=0.5.0
+VERSION=0.7.0
 CHANNELS_FILE=./env/guix/nonrde/env/guix/channels.scm
 
 GUIX_ENV_LOAD_PATH=-L ./env/guix -L ../rde/examples/env/guix
@@ -15,6 +15,7 @@ CONFIGS=${SRC_DIR}/configs.scm
 PULL_EXTRA_OPTIONS=
 # --allow-downgrades
 ROOT_MOUNT_POINT=/mnt
+SUBSTITUTE_URLS=https://ci.guix.moe https://nonguix-proxy.ditigal.xyz https://ci.guix.gnu.org https://bordeaux.guix.gnu.org
 
 ares:
 	${GUIX} shell ${DEV_ENV_LOAD_PATH} guile-next guile-ares-rs \
@@ -33,15 +34,26 @@ authorize-nonguix:
 describe:
 	${GUIX} describe
 
+zotero:
+	${GUIX} shell zotero \
+        --substitute-urls="$(SUBSTITUTE_URLS)" \
+	-- zotero
+
 ixy/system/build:
 	RDE_TARGET=ixy-system ${GUIX} \
 	system ${ALL_SRC_LOAD_PATH} \
-        --substitute-urls="https://substitutes.nonguix.org https://ci.guix.gnu.org https://bordeaux.guix.gnu.org" \
+        --substitute-urls="$(SUBSTITUTE_URLS)" \
 	build ${CONFIGS}
 
 ixy/system/reconfigure:
 	RDE_TARGET=ixy-system sudo -E ${GUIX} system \
+        --substitute-urls="$(SUBSTITUTE_URLS)" \
 	reconfigure ${ALL_SRC_LOAD_PATH} ${CONFIGS} # --allow-downgrades
+
+ixy/home/reconfigure:
+	RDE_TARGET=ixy-home ${GUIX} home \
+	reconfigure ${ALL_SRC_LOAD_PATH} ${CONFIGS} # --allow-downgrades
+
 
 cow-store:
 	sudo herd start cow-store ${ROOT_MOUNT_POINT}
@@ -53,10 +65,17 @@ ixy/system/init: guix
 target:
 	mkdir -p target
 
-target/nonrde-live.iso: guix target
-	RDE_TARGET=live-system ${GUIX} system image --image-type=iso9660 \
+target/nonrde-live.iso: target
+	RDE_TARGET=live-system ${GUIX} system ${ALL_SRC_LOAD_PATH} \
+	image --image-type=iso9660 \
 	${CONFIGS} -r target/nonrde-live-tmp.iso
 	mv -f target/nonrde-live-tmp.iso target/nonrde-live.iso
+
+ixy-live:
+	RDE_TARGET=ixy-system ${GUIX} \
+	system ${ALL_SRC_LOAD_PATH} \
+        --substitute-urls="$(SUBSTITUTE_URLS)" \
+	image --image-type=iso9660 ${CONFIGS}
 
 target/release:
 	mkdir -p target/release
