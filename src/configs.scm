@@ -2,6 +2,7 @@
              (rde features)
              (rde features base)
              (rde features system)
+             (rde features ast-grep)
 
              (srfi srfi-1)
              (ice-9 match)
@@ -84,6 +85,8 @@
                    linux-firmware
                    sof-firmware
                    ))
+      (feature-ast-grep
+       #:ast-grep (@ (nonrde packages code-analysis) ast-grep))
       (feature-nonguix-substitutes))
      cleaned-features))))
 
@@ -109,5 +112,8 @@
       ("ixy-system" ixy-os)
       ("ixy-home" ixy-home)
       (_ ixy-os))))
+
+(define (comment)
+  ((@ (rde api store) build) ixy-os))
 
 (dispatcher)
